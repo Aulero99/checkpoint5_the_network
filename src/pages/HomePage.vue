@@ -1,9 +1,12 @@
 <template>
-  <div v-for="p in posts" :key="p.id">
-    <PostCard :post="p"/>
+  <div class="posts-container">
+    <div v-for="p in posts" :key="p.id">
+      <PostCard :post="p"/>
+    </div>
   </div>
-  <button @click="changePage('prev')">Older</button>
-  <button @click="changePage('next')">Newer</button>
+
+  <button :disabled="!previous" @click="changePage(previous)">Older</button>
+  <button :disabled="!next" @click="changePage(next)">Newer</button>
 </template>
 
 <script>
@@ -27,12 +30,11 @@ export default {
 
     return {
       posts: computed(() => AppState.posts),
+      previous: computed(()=> AppState.postPrevPage),
+      next: computed(()=> AppState.postNextPage),
 
-      async changePage(which){
+      async changePage(value){
       try {
-        let value = ''
-        if(which == 'next'){ value = AppState.postNextPage }
-        else{ value = AppState.postPrevPage }
         await postsService.changePage(value)
       } catch (error) {
         Pop.error(error)
@@ -45,5 +47,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.posts-container{
+  padding: 0.5rem 0 0 0.5rem;
+}
 </style>
