@@ -38,7 +38,11 @@ export default {
       window.onscroll = () =>{
       let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight;
       let windowHeight = document.documentElement.offsetHeight
-      logger.log(bottomOfWindow)
+      // logger.log(bottomOfWindow)
+      // logger.log(windowHeight)
+      if(bottomOfWindow >= windowHeight){
+        logger.log('bottom of window reached')
+      }
 
     }
     }
