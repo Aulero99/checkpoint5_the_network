@@ -10,10 +10,13 @@
 </template>
 
 <script>
+
 import Pop from '../utils/Pop'
 import { postsService } from '../services/PostsService.js'
 import { computed, onMounted } from 'vue'
 import { AppState } from '../AppState'
+import { logger } from '../utils/Logger'
+
 export default {
   setup() {
     async function getPostsFromApi() {
@@ -27,6 +30,18 @@ export default {
     onMounted(() => {
       getPostsFromApi()
     })
+
+    onMounted(() => {
+      checkScroll()
+    })
+    function checkScroll(){
+      window.onscroll = () =>{
+      let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight;
+      let windowHeight = document.documentElement.offsetHeight
+      logger.log(bottomOfWindow)
+
+    }
+    }
 
     return {
       posts: computed(() => AppState.posts),
