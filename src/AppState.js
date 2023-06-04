@@ -8,7 +8,9 @@ export const AppState = reactive({
   /** @type {import('./models/Sponsor.js').Sponsor[]} */
   sponsors:[],
   /** @type {import('./models/Post.js').Post[]} */
-  postsService:[],
+  posts:[],
+  /** @type {import('./models/Post.js').Post{}} */
+  post:{},
   postPage:0,
   postTotalPage:0,
   postNextPage:null,

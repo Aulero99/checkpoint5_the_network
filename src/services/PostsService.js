@@ -4,9 +4,23 @@ import { logger } from "../utils/Logger.js"
 import { api } from "./AxiosService.js"
 
 class PostsService {
+
+    async deletePost(id){
+        const res = await api.delete(`/api/posts/${id}`)
+        logger.log(res)
+        AppState.posts = AppState.posts.filter(p=> p.id != id)
+    }
+
+    async newPost(formData){
+        const res = await api.post('api/posts',{...formData})
+        const newPost = new Post(res.data)
+        logger.log(newPost)
+        AppState.posts.splice(0,0, newPost)
+    }
+
     async getPostsFromApi(){
         const res = await api.get('api/posts')
-        logger.log(res.data)
+        // logger.log(res.data)
         this.saveData(res)
     }
 

@@ -4,14 +4,19 @@
             <img :src="user.picture" :alt="user.name">
         </div>
         <div class="post-form">
-            <form action="">
-                <textarea placeholder="Share whats happening"></textarea>
+            <form @submit.prevent="handleSubmit">
+                <textarea name="body" placeholder="Share whats happening" v-model="editable.body" required></textarea>
                 <div class="form-bar">
-                    <div class="photo">
+                    <div type="button" class="selectable no-select photo" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="mdi mdi-image"></i> Photo
                     </div>
-                    <button class="btn btn-dark">
-                        Post
+
+                    <div class="dropdown-menu dropdown-menu-lg-end dropdown-menu-start p-0" aria-labelledby="authDropdown">
+                        <input name="imgUrl" type="text" placeholder="link" v-model="editable.imgUrl">
+                    </div>
+
+                    <button type="submit" class="btn btn-dark">
+                        <i class="mdi mdi-post"></i> Post
                     </button>
                 </div>
             </form>
@@ -20,18 +25,34 @@
 </template>
   
 <script>
-import { computed } from 'vue'
+import { computed, watchEffect, ref } from 'vue'
 import { AppState } from '../AppState'
+import Pop from '../utils/Pop'
+import { logger } from '../utils/Logger'
+import { postsService } from '../services/PostsService'
 
   export default {
-    props:{
-
-    },
+    props:{},
     setup() {
-      return {
-        user: computed(()=>AppState.user),
-      }
-    }
+        const editable = ref({})
+        watchEffect(()=> {
+            editable.value = AppState.post
+        })
+
+        return {
+            user: computed(()=>AppState.user),
+            editable,
+            async handleSubmit(){
+                try {
+                    // logger.log(editable.value)
+                    await postsService.newPost(editable.value)
+                } catch (error) {
+                    Pop.error(error)
+                }
+            }
+        
+        }
+        }
   }
 </script>
 
@@ -83,5 +104,14 @@ import { AppState } from '../AppState'
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+.photo{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    border: 0.099rem solid black;
 }
 </style>

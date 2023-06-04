@@ -8,7 +8,9 @@
             <h5>{{ post.creatorName }}</h5>
         </div>
         <div class="profile-controls" v-if="user.id == post.creatorId">
-            controls
+          <div class="delete" @click="deletePost(post.id)">
+            <i class="mdi mdi-delete"></i>
+          </div>
         </div>
     </div>
     
@@ -71,6 +73,14 @@ import { computed } from 'vue'
           const postLiked = post.likeIds.findIndex(p => p == userId)
           if(postLiked == -1){ return false}
           return true
+        },
+
+        async deletePost(id){
+          try {
+            await postsService.deletePost(id)
+          } catch (error) {
+            Pop.error(error)
+          }
         }
       }
     }
@@ -134,5 +144,8 @@ import { computed } from 'vue'
 }
 .img-container img{
     height: 100%;
+}
+.delete{
+  cursor: pointer;
 }
 </style>
