@@ -7,7 +7,7 @@ export class Sponsor{
         this.banner = data.banner
     }
 
-    get complink(){
+    get compLink(){
         return ('http://www.'+ this.link)
     }
 }

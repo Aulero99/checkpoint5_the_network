@@ -1,5 +1,6 @@
 <template>
   <div class="posts-container">
+      <CreatePostCard />
     <div v-for="p in posts" :key="p.id">
       <PostCard :post="p"/>
     </div>
@@ -31,21 +32,23 @@ export default {
       getPostsFromApi()
     })
 
-    onMounted(() => {
-      checkScroll()
-    })
-    function checkScroll(){
-      window.onscroll = () =>{
-      let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight;
-      let windowHeight = document.documentElement.offsetHeight
-      // logger.log(bottomOfWindow)
-      // logger.log(windowHeight)
-      if(bottomOfWindow >= windowHeight){
-        logger.log('bottom of window reached')
-      }
+// NOTE this is for infinite scroll if I implement it
+    // onMounted(() => {
+    //   checkScroll()
+    // })
 
-    }
-    }
+    // function checkScroll(){
+    //   window.onscroll = () =>{
+    //   let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight;
+    //   let windowHeight = document.documentElement.offsetHeight
+    //   // logger.log(bottomOfWindow)
+    //   // logger.log(windowHeight)
+    //   if(bottomOfWindow >= windowHeight - 1){
+    //     logger.log('bottom of window reached')
+    //   }
+
+    // }
+    // }
 
     return {
       posts: computed(() => AppState.posts),
