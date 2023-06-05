@@ -44,12 +44,15 @@ import { AppState } from '../AppState'
 import Pop from '../utils/Pop'
 // import { profilesService } from '../services/ProfilesService'
 import { postsService } from '../services/PostsService'
+import { router } from '../router'
+import { logger } from '../utils/Logger'
+import { useRoute } from 'vue-router'
 
 
 
   export default {
     setup() {
-
+      const searchParam = useRoute().query.search
       const editable = ref({})
       watchEffect(() => { editable.value = { ...AppState.searchQuery } })
 
@@ -60,6 +63,14 @@ import { postsService } from '../services/PostsService'
       //           Pop.error(error)
       //       }
       //   }
+      
+      async function callSearchOnLoad(){
+        if(!searchParam){ return }
+        else{ 
+          AppState.searchQuery = searchParam
+          getPostsBySearch()
+        }
+      }
 
       async function getPostsBySearch(){
         // NOTE we first need to clear out any previous search data from the AppState
@@ -73,6 +84,7 @@ import { postsService } from '../services/PostsService'
       }
 
       onMounted(()=>{
+          callSearchOnLoad()
           AppState.searchQuery = null
           AppState.posts = null
           AppState.profiles = null
@@ -83,11 +95,12 @@ import { postsService } from '../services/PostsService'
         search: computed(()=>AppState?.searchQuery),
         profiles: computed(() => AppState?.profiles),
         posts: computed(() => AppState?.posts),
-
         editable,
+
         async handleSubmit() {
             try {
             AppState.searchQuery = editable.value.search
+            router.push({ name:'Search', query:{search:editable.value.search} })
             await getPostsBySearch()
             } catch (error) {
               Pop.error(error, '[SearchPage: handleSubmit()]')
