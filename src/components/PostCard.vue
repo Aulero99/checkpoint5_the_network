@@ -3,7 +3,7 @@
     
     <div class="profile">
 
-        <router-link :to="{name: 'Profile', params:{ id:post.creatorId }}">
+        <router-link :to="{name: 'Profile', params:{ id:post.creatorId }}" :title="post.creatorName + `'s profile page`">
           <div class="profile-info">
               <div class="img-container">
                   <img :src="post.creatorImg" alt="Profile Image">
@@ -107,7 +107,7 @@ import { computed } from 'vue'
   font-size: 1.5rem;
 }
 .post-click:hover{
-  color: red;
+  color: #25a0a0;
 }
 .post-click{
   display: flex;
@@ -156,6 +156,6 @@ import { computed } from 'vue'
   transition: all 100ms;
 }
 .delete:hover{
-  color: red;
+  color: rgb(199, 0, 0);
 }
 </style>

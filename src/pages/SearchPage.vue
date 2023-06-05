@@ -1,17 +1,19 @@
 <template>
   <div class="posts-container">
-    <form class="form-inline d-flex flex-row searchbar" @submit.prevent="handleSubmit">
-      <input 
-      class="form-control mr-sm-2 rounded-0 rounded-start-2" 
-      type="search" 
-      placeholder="Search" 
-      aria-label="Search"
-      name="search"
-      required 
-      v-model="editable.search"
-      >
-      <button class="btn btn-dark my-2 my-sm-0 rounded-0 rounded-end-2" type="submit">Search</button>
-    </form>
+    <div class="search-container">
+      <form class="form-inline d-flex flex-row searchbar" @submit.prevent="handleSubmit">
+        <input 
+        class="form-control mr-sm-2 rounded-0 rounded-start-2" 
+        type="search" 
+        placeholder="Search" 
+        aria-label="Search"
+        name="search"
+        required 
+        v-model="editable.search"
+        >
+        <button class="btn btn-dark my-2 my-sm-0 rounded-0 rounded-end-2" type="submit">Search</button>
+      </form>
+    </div>
 
   <!-- <div v-if="profiles">
     <div v-for="p in profiles" :key="p.id">
@@ -97,6 +99,14 @@ import { postsService } from '../services/PostsService'
 </script>
 
 <style scoped>
+.search-container{
+  background-color: #e5e5e5;
+  border: solid 0.01rem black;
+  border-radius: 0.15rem;
+  padding:0.5rem 1rem 0.25rem 1rem;
+  margin-top: 0.05rem;
+  margin-bottom: 1rem;
+}
 .searchbar{
   margin: 0.5rem 0 1rem 0;
 }

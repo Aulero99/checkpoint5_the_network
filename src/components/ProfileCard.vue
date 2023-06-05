@@ -3,12 +3,12 @@
 
         <div class="cover-img">
             <div class="profile">
-                <img :src="profile.picture" alt="" v-if="profile.picture">
+                <img :src="profile.picture" :alt="profile.name" v-if="profile.picture">
                 <div class="grad" v-if="profile.graduated">
                     <i class="mdi mdi-school"></i>
                 </div>
             </div>
-            <img :src="profile.coverImg" alt="" v-if="profile.coverImg" class="cover">
+            <img :src="profile.coverImg" :alt="profile.name" v-if="profile.coverImg" class="cover">
         </div>
 
         <div class="links">
@@ -25,8 +25,8 @@
 
         <div class="content">
             <h2> {{ profile.name }} </h2>
-            <small>{{ profile.class }}</small>
-            <p> {{ profile.bio }} </p>
+            <p class="grad-class" v-if="profile.class">{{ profile.class }}</p>
+            <p class="bio"> {{ profile.bio }} </p>
         </div>
 
 
@@ -46,6 +46,16 @@ import { Account, Profile } from '../models/Account'
 </script>
 
 <style scoped>
+h2{
+    margin: 0;
+}
+p{
+    padding: 0;
+    margin: 0;
+}
+.bio{
+    margin:0.75rem 0;
+}
 .profile-card{
     border: solid 1px #a9a9a9;
     background-color: #fff;
@@ -107,7 +117,7 @@ import { Account, Profile } from '../models/Account'
     transition: all 150ms;
 }
 .links a:hover{
-    color: rgb(45, 195, 165);
+    color: #25a0a0;
 }
 .grad{
     background-color: white;

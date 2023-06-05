@@ -1,5 +1,5 @@
 <template>
-    <form class="card elevation-2" @submit.prevent="handleSubmit">
+    <form class="account-form elevation-2" @submit.prevent="handleSubmit">
   
       <div class="card-body">
 
@@ -15,7 +15,7 @@
         </div>
 
         <div for="bio" class="form-floating mb-3">
-          <textarea name="bio" class="form-control" placeholder="bio" type="text" required v-model="editable.bio"></textarea>
+          <textarea name="bio" class="form-control bio" placeholder="bio" type="text" required v-model="editable.bio"></textarea>
           <label for="bio">Bio:</label>
         </div>
 
@@ -75,8 +75,8 @@
 
       </div>
 
-      <div for="submit" class="card-footer text-end">
-        <button class="btn btn-outline-primary" type="submit">Save Account</button>
+      <div for="submit" class="account-form-end">
+        <button class="btn btn-dark" type="submit">Save Account</button>
       </div>
   
     </form>
@@ -118,6 +118,20 @@
 }
 form{
   margin-bottom: 1rem;
+}
+.account-form{
+  background-color: #e5e5e5;
+  padding: 0.75rem;
+  border: solid 0.01rem black;
+  border-radius: 0.15rem;
+}
+.account-form-end{
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.75rem 0 0.5rem 0;
+}
+.bio{
+  min-height: 7rem;
 }
 </style>
   
