@@ -4,10 +4,18 @@
     <div v-for="p in posts" :key="p.id">
       <PostCard :post="p"/>
     </div>
+    <div v-if="!posts">
+      <Spinner/>
+    </div>
   </div>
 
-  <button :disabled="!previous" @click="changePage(previous)">Older</button>
-  <button :disabled="!next" @click="changePage(next)">Newer</button>
+  <!-- NOTE this is for adding in a pagination option instead of infinite scroll -->
+  <!-- <NextPageControls/> -->
+
+  <div v-if="posts">
+    <InfiniteScroll/>
+  </div>
+  
 </template>
 
 <script>
@@ -16,7 +24,6 @@ import Pop from '../utils/Pop'
 import { postsService } from '../services/PostsService.js'
 import { computed, onMounted } from 'vue'
 import { AppState } from '../AppState'
-import { logger } from '../utils/Logger'
 
 export default {
   setup() {
@@ -29,41 +36,12 @@ export default {
     }
 
     onMounted(() => {
+      AppState.profile = null
+      AppState.posts = null
       getPostsFromApi()
     })
 
-// NOTE this is for infinite scroll if I implement it
-    // onMounted(() => {
-    //   checkScroll()
-    // })
-
-    // function checkScroll(){
-    //   window.onscroll = () =>{
-    //   let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight;
-    //   let windowHeight = document.documentElement.offsetHeight
-    //   // logger.log(bottomOfWindow)
-    //   // logger.log(windowHeight)
-    //   if(bottomOfWindow >= windowHeight - 1){
-    //     logger.log('bottom of window reached')
-    //   }
-
-    // }
-    // }
-
-    return {
-      posts: computed(() => AppState.posts),
-      previous: computed(()=> AppState.postPrevPage),
-      next: computed(()=> AppState.postNextPage),
-
-      async changePage(value){
-      try {
-        await postsService.changePage(value)
-      } catch (error) {
-        Pop.error(error)
-      }
-    }
-
-    }
+    return { posts: computed(() => AppState.posts) }
   }
 }
 </script>
@@ -71,5 +49,10 @@ export default {
 <style scoped lang="scss">
 .posts-container{
   padding: 0.5rem 0 0 0.5rem;
+}
+@media (max-width: 768px) { 
+  .posts-container{
+  padding: 0.5rem 0;
+}
 }
 </style>
