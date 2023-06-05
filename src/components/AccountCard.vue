@@ -52,6 +52,15 @@
           <label for="linkedin">Resume:</label>
         </div>
 
+        <div for="class" class="form-floating mb-3">
+          <input name="class" 
+          class="form-control" 
+          placeholder="Class" 
+          type="text"  
+          v-model="editable.class">
+          <label for="class">Graduating Class:</label>
+        </div>
+
         <div for="graduated" class="form-check check-area">
             <input class="form-check-input" 
             type="checkbox"

@@ -25,6 +25,7 @@
 
         <div class="content">
             <h2> {{ profile.name }} </h2>
+            <small>{{ profile.class }}</small>
             <p> {{ profile.bio }} </p>
         </div>
 
