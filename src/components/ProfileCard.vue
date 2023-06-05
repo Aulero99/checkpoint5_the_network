@@ -1,5 +1,5 @@
 <template>
-    <div class="profile-card" v-if="profile">
+    <div class="profile-card elevation-2" v-if="profile">
 
         <div class="cover-img">
             <div class="profile">

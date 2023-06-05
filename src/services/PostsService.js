@@ -1,32 +1,32 @@
 import { AppState } from "../AppState.js"
 import { Post } from "../models/Post.js"
-import { logger } from "../utils/Logger.js"
+// import { logger } from "../utils/Logger.js"
 import { api } from "./AxiosService.js"
 
 class PostsService {
 
     async getPostsBySearch(search){
         const res = await api.get('api/posts', { params: { query: search } })
-        logger.log(res.data)
+            // logger.log(res.data)
         this.saveData(res)
     }
 
     async deletePost(id){
         const res = await api.delete(`/api/posts/${id}`)
-        logger.log(res)
+            // logger.log(res)
         AppState.posts = AppState.posts.filter(p=> p.id != id)
     }
 
     async newPost(formData){
         const res = await api.post('api/posts',{...formData})
         const newPost = new Post(res.data)
-        logger.log(newPost)
+            // logger.log(newPost)
         AppState.posts.splice(0,0, newPost)
     }
 
     async getPostsFromApi(){
         const res = await api.get('api/posts')
-        // logger.log(res.data)
+            // logger.log(res.data)
         this.saveData(res)
     }
     async getPostsByUserId(id){
@@ -63,7 +63,7 @@ class PostsService {
 
     saveData(res){
         AppState.posts = res.data.posts.map(p => new Post(p))
-        // logger.log('the posts are', AppState.posts)
+            // logger.log('the posts are', AppState.posts)
         AppState.postPage = res.data.page
         AppState.postTotalPage = res.data.totalPages
         AppState.postNextPage = res.data.newer

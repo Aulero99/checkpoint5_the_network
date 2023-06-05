@@ -1,25 +1,31 @@
 <template>
-    <form class="card elevation-1" @submit.prevent="handleSubmit">
+    <form class="card elevation-2" @submit.prevent="handleSubmit">
   
       <div class="card-body">
-        <div class="form-floating mb-3">
+
+        <div for="name" class="form-floating mb-3">
           <input name="name" class="form-control" placeholder="Name" type="text" required v-model="editable.name">
           <label for="name">Name:</label>
         </div>
 
-        <div class="form-floating mb-3">
+        <div for="picture" class="form-floating mb-3">
           <input name="picture" class="form-control" placeholder="Profile Picture" type="url" required
             v-model="editable.picture">
           <label for="picture">Profile Image:</label>
         </div>
 
-        <div class="form-floating mb-3">
+        <div for="bio" class="form-floating mb-3">
+          <textarea name="bio" class="form-control" placeholder="bio" type="text" required v-model="editable.bio"></textarea>
+          <label for="bio">Bio:</label>
+        </div>
+
+        <div for="cover-img" class="form-floating mb-3">
           <input name="cover-img" class="form-control" placeholder="cover Image" type="url" required
             v-model="editable.coverImg">
           <label for="cover-img">Profile Background:</label>
         </div>
 
-        <div class="form-floating mb-3">
+        <div for="github" class="form-floating mb-3">
           <input name="github" 
           class="form-control" 
           placeholder="Github" 
@@ -28,7 +34,7 @@
           <label for="github">Github:</label>
         </div>
 
-        <div class="form-floating mb-3">
+        <div for="linkedin" class="form-floating mb-3">
           <input name="linkedin" 
           class="form-control" 
           placeholder="LinkedIn" 
@@ -37,7 +43,7 @@
           <label for="linkedin">LinkedIn:</label>
         </div>
 
-        <div class="form-floating mb-3">
+        <div for="resume" class="form-floating mb-3">
           <input name="resume" 
           class="form-control" 
           placeholder="Resume" 
@@ -46,7 +52,7 @@
           <label for="linkedin">Resume:</label>
         </div>
 
-        <div class="form-check check-area">
+        <div for="graduated" class="form-check check-area">
             <input class="form-check-input" 
             type="checkbox"
             name="graduated" 
@@ -60,10 +66,9 @@
 
       </div>
 
-      <div class="card-footer text-end">
+      <div for="submit" class="card-footer text-end">
         <button class="btn btn-outline-primary" type="submit">Save Account</button>
       </div>
-  
   
     </form>
   </template>
@@ -74,27 +79,20 @@
     import { AppState } from '../AppState.js';
     import { accountService } from '../services/AccountService.js';
     import Pop from '../utils/Pop.js';
-    import { logger } from '../utils/Logger.js';
   
     export default {
     setup() {
         const editable = ref({})
-
-        watchEffect(() => {
-        editable.value = { ...AppState.account }
-        })
-
+        watchEffect(() => { editable.value = { ...AppState.account } })
 
         return {
         editable,
         async handleSubmit() {
             try {
-            logger.log('the user is',AppState.user)
-            logger.log(editable.value)
-            await accountService.editAccount(editable.value)
-            } catch (error) {
-            Pop.error(error)
-            }
+              if(await Pop.confirm('Are you sure you want to apply these changes?')){
+                await accountService.editAccount(editable.value) 
+              } 
+            } catch (error) { Pop.error(error, '[AccountCard: handleSubmit()]') }
         }
         }
     }
@@ -108,6 +106,9 @@
     width: auto;
     padding: 0.5rem 2rem;
     border-radius: 0.35rem;
+}
+form{
+  margin-bottom: 1rem;
 }
 </style>
   

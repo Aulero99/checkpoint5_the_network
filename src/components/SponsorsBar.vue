@@ -1,5 +1,4 @@
 <template>
-  <!-- NOTE Content gos here -->
   <div  class="sponsor-tall-container">
     <div v-for="s in sponsors" :key="s.title" class="sponsor-tall elevation-2">
       <SponsorCardTall :sponsor="s"/>
@@ -13,25 +12,15 @@ import { sponsorsService } from '../services/SponsorsService'
 import Pop from '../utils/Pop'
 import { AppState } from '../AppState'
   export default {
-    props:{
-
-    },
     setup() {
         async function getSponsorsFromApi(){
-            try {
-                await sponsorsService.getSponsorsFromApi()
-            } catch (error) {
-                Pop.error(error)
-            }
+            try { await sponsorsService.getSponsorsFromApi() } 
+            catch (error) { Pop.error(error, 'SponsorBar: getSponsorsFromApi()') }
         }
 
-        onMounted(()=> {
-          getSponsorsFromApi()
-        })
+        onMounted(()=> { getSponsorsFromApi() })
 
-      return {
-        sponsors: computed(()=> AppState.sponsors)
-      }
+      return { sponsors: computed(()=> AppState.sponsors) }
     }
   }
 </script>

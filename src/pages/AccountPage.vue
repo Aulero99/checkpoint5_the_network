@@ -9,6 +9,10 @@
         <AccountCard :account="profile"/>
       </div>
 
+      <div v-if="profile">
+        <CreatePostCard/>
+      </div>
+
       <div v-for="p in posts" :key="p.id">
           <PostCard :post="p"/>
       </div>
@@ -33,25 +37,18 @@ import { profilesService } from '../services/ProfilesService'
 import { computed, onMounted } from 'vue'
 import { AppState } from '../AppState'
 import { postsService } from '../services/PostsService'
-// import { logger } from '../utils/Logger'
 
   export default {
     setup() {
 
       async function getProfile(){
-            try {
-                await profilesService.getProfileById(AppState.user.id)
-            } catch (error) {
-                Pop.error(error)
-            }
+            try { await profilesService.getProfileById(AppState.user.id) } 
+            catch (error) { Pop.error(error, '[AccountPage: getProfile()]') }
         }
 
         async function getPostsByUserId(){
-            try {
-                await postsService.getPostsByUserId(AppState.user.id)
-            } catch (error) {
-                Pop.error(error)
-            }
+            try { await postsService.getPostsByUserId(AppState.user.id) } 
+            catch (error) { Pop.error(error, '[AccountPage: getPostsByUserId()]') }
         }
 
         onMounted(()=>{
@@ -60,12 +57,12 @@ import { postsService } from '../services/PostsService'
             getProfile()
             getPostsByUserId()
         })
+        
 
       return {
         profile: computed(() => AppState?.profile),
         account: computed(()=> AppState?.account),
         posts: computed(() => AppState?.posts),
-        user: computed(()=> AppState?.user)
       }
     }
   }

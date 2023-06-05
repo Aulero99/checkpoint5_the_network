@@ -9,13 +9,10 @@
     </div>
   </div>
 
-  <!-- NOTE this is for adding in a pagination option instead of infinite scroll -->
-  <!-- <NextPageControls/> -->
-
   <div v-if="posts">
     <InfiniteScroll/>
   </div>
-  
+
 </template>
 
 <script>
@@ -28,11 +25,8 @@ import { AppState } from '../AppState'
 export default {
   setup() {
     async function getPostsFromApi() {
-      try {
-        await postsService.getPostsFromApi()
-      } catch (error) {
-        Pop.error(error, '[Getting Posts]')
-      }
+      try { await postsService.getPostsFromApi() } 
+      catch (error) { Pop.error(error, '[HomePage: getPostsFromApi()]') }
     }
 
     onMounted(() => {

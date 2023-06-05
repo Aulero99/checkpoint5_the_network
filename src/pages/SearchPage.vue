@@ -40,19 +40,16 @@
 import { computed, onMounted, watchEffect, ref } from 'vue'
 import { AppState } from '../AppState'
 import Pop from '../utils/Pop'
-import { profilesService } from '../services/ProfilesService'
+// import { profilesService } from '../services/ProfilesService'
 import { postsService } from '../services/PostsService'
-import { logger } from '../utils/Logger'
 
 
 
   export default {
     setup() {
-      const editable = ref({})
 
-      watchEffect(() => {
-        editable.value = { ...AppState.searchQuery }
-      })
+      const editable = ref({})
+      watchEffect(() => { editable.value = { ...AppState.searchQuery } })
 
       // async function getProfilesBySearch(){
       //       try {
@@ -63,23 +60,21 @@ import { logger } from '../utils/Logger'
       //   }
 
       async function getPostsBySearch(){
-
+        // NOTE we first need to clear out any previous search data from the AppState
+        // before a new search can be preformed
         AppState.posts = null
+        // Then the new search parameter can be applied to the AppState, this ensures
+        // our listeners handle the search correctly
         let search = AppState.searchQuery
-
-          try {
-              logger.log('the search parameter is', search)
-              await postsService.getPostsBySearch(search)
-          } catch (error) {
-              Pop.error(error)
-          }
+        try { await postsService.getPostsBySearch(search) } 
+        catch (error) { Pop.error(error, '[SearchPage: setPostsBySearch()]') }
       }
 
       onMounted(()=>{
-            AppState.searchQuery = null
-            AppState.posts = null
-            AppState.profiles = null
-        })
+          AppState.searchQuery = null
+          AppState.posts = null
+          AppState.profiles = null
+      })
         
 
       return {
@@ -91,10 +86,9 @@ import { logger } from '../utils/Logger'
         async handleSubmit() {
             try {
             AppState.searchQuery = editable.value.search
-            logger.log('search is', AppState.searchQuery)
             await getPostsBySearch()
             } catch (error) {
-            Pop.error(error)
+              Pop.error(error, '[SearchPage: handleSubmit()]')
             }
         }
       }

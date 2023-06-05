@@ -1,7 +1,7 @@
 <template>
-    <div class="post-card" v-if="user.isAuthenticated">
+    <div class="post-card elevation-2" v-if="user.isAuthenticated">
         <div class="user-img">
-            <img :src="user.picture" :alt="user.name">
+            <img :src="account.picture" :alt="account.name">
         </div>
         <div class="post-form">
             <form @submit.prevent="handleSubmit">
@@ -28,7 +28,6 @@
 import { computed, watchEffect, ref } from 'vue'
 import { AppState } from '../AppState'
 import Pop from '../utils/Pop'
-import { logger } from '../utils/Logger'
 import { postsService } from '../services/PostsService'
 
   export default {
@@ -40,14 +39,15 @@ import { postsService } from '../services/PostsService'
 
         return {
             user: computed(()=>AppState.user),
+            account: computed(()=>AppState.account),
             editable,
             async handleSubmit(){
-                try {
-                    // logger.log(editable.value)
+                try { 
                     await postsService.newPost(editable.value)
-                } catch (error) {
-                    Pop.error(error)
-                }
+                    AppState.post.body = ''
+                    AppState.post.imgUrl = '' 
+                } 
+                catch (error) { Pop.error(error, '[CreatePostCard: handleSubmit()]') }
             }
         }
         }

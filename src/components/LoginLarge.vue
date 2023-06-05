@@ -47,23 +47,18 @@
           <button class="btn btn-dark logout" @click="logout">
             Logout
           </button>
-          <!-- <button @click="infoget">
-            userinfo
-          </button> -->
         </div>
 
 
       </div>
   </div>
-
-  <!-- </div> -->
 </template>
 
 <script>
 import { computed } from 'vue'
 import { AppState } from '../AppState'
 import { AuthService } from '../services/AuthService'
-import { logger } from '../utils/Logger'
+
 export default {
   setup() {
     return {
@@ -74,10 +69,6 @@ export default {
       },
       async logout() {
         AuthService.logout({ returnTo: window.location.origin })
-      },
-      infoget(){
-        logger.log(AppState.user)
-        logger.log(AppState.account)
       }
     }
   }
@@ -129,7 +120,6 @@ a{
   flex-wrap: wrap;
   align-content: center;
   align-items: center;
-  // text-align: center;
 }
 .information a{
   display: flex;
@@ -144,16 +134,13 @@ a:hover{
   color: rgb(73, 191, 255);
 }
 .profile{
-    width: 17vw;
+    width: 80%;
     max-width: 15rem;
-    min-width: 8rem;
     aspect-ratio: 1/1;
     z-index: 5;
     display: flex;
-    flex-direction: column;
     justify-content: flex-end;
     align-items: flex-end;
-    flex-wrap: wrap;
     position: relative;
     margin: auto;
 }

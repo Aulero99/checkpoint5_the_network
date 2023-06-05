@@ -2,24 +2,27 @@
   <div class="post-card elevation-2 d-flex flex-column" @click="userIdInPostLikeArray(post)">
     
     <div class="profile">
+
         <router-link :to="{name: 'Profile', params:{ id:post.creatorId }}">
-        <div class="profile-info">
-            <div class="img-container">
-                <img :src="post.creatorImg" alt="Profile Image">
-            </div>
-            <h5>{{ post.creatorName }}</h5>
-        </div>
+          <div class="profile-info">
+              <div class="img-container">
+                  <img :src="post.creatorImg" alt="Profile Image">
+              </div>
+              <h5>{{ post.creatorName }}</h5>
+          </div>
         </router-link>
+
         <div class="profile-controls" v-if="user.id == post.creatorId">
-          <div class="delete" @click="deletePost(post.id)">
+          <div title="Delete Post" class="delete" @click="deletePost(post.id)">
             <i class="mdi mdi-delete"></i>
           </div>
         </div>
+
     </div>
     
     <p class="post-body">{{ post.body }}</p>
     <img :src="post.img" alt="Post Image" v-if="post.img">
-    <div class="post-like">
+    <div title="Like Post" class="post-like">
       <div class="updated">
         {{ post.updatedAt }}
       </div>
@@ -54,20 +57,15 @@ import { computed } from 'vue'
 
 
   export default {
-    props:{
-        post: { type: Post, required: true }
-    },
+    props:{ post: { type: Post, required: true } },
     setup() {
       return {
 
         user: computed(()=>AppState.user),
 
         async likePost(id){
-          try {
-            await postsService.likePost(id)
-          } catch (error) {
-            Pop.error(error)
-          }
+          try { await postsService.likePost(id) } 
+          catch (error) { Pop.error(error, '[PostCard: likePost()]') }
         },
 
         userIdInPostLikeArray(post){
@@ -83,7 +81,7 @@ import { computed } from 'vue'
               await postsService.deletePost(id)
             }
           } catch (error) {
-            Pop.error(error)
+            Pop.error(error, '[PostCard: deletePost()]')
           }
         }
       }
@@ -106,21 +104,24 @@ import { computed } from 'vue'
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  font-size: 1.5rem;
+}
+.post-click:hover{
+  color: red;
 }
 .post-click{
   display: flex;
   flex-direction: row;
+  transition: all 100ms;
 }
 .auth{
   cursor: pointer;
 }
 .icon{
   line-height: 164%;
-  font-size: 1rem;
 }
 .number{
   margin-right: 0.35rem;
-  font-size: 1rem;
 }
 .profile{
     display: flex;
@@ -151,5 +152,10 @@ import { computed } from 'vue'
 }
 .delete{
   cursor: pointer;
+  font-size: 1.5rem;
+  transition: all 100ms;
+}
+.delete:hover{
+  color: red;
 }
 </style>

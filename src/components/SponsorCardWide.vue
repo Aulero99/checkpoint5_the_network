@@ -1,6 +1,6 @@
 <template>
     <a :href="sponsor.compLink">
-      <img :src="sponsor.tall" :alt="sponsor.title">
+      <img :src="sponsor.banner" :alt="sponsor.title">
     </a>
 </template>
   
