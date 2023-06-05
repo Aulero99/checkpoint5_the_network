@@ -1,65 +1,69 @@
 <template>
-  <div>
+  <div class="login-card">
 
-    <button class="btn btn-dark" @click="login"
-      v-if="!user.isAuthenticated">
-      Login
-    </button>
-
-    <div v-else>
-      <div class="dropdown d-flex flex-column justify-content-center align-items-center">
-
-        <div type="button" class="border-0 selectable no-select account-button" data-bs-toggle="dropdown" aria-expanded="false">
-          <div v-if="account.picture || user.picture" class="p-0 picture-container">
-            <img :src="account.picture || user.picture" alt="account photo" class="account-picture" />
-          </div>
-        </div>
-
-        <div class="dropdown-menu dropdown-menu-lg-end dropdown-menu-start p-0" aria-labelledby="authDropdown">
-          <div class="list-group">
-            <router-link :to="{ name: 'Account' }">
-              <div class="list-group-item dropdown-item list-group-item-action">
-                Manage Account
-              </div>
-            </router-link>
-            <div class="list-group-item dropdown-item list-group-item-action text-danger selectable" @click="logout">
-              <i class="mdi mdi-logout"></i>
-              logout
-            </div>
-          </div>
-        </div>
-
-        <div v-if="user.name" class="information">
-          {{user.name}}
-        </div>
-
-        <div v-if="user.github" class="information">
-          <a :href="user.github">
-            <i class="mdi mdi-github"></i> Github
-          </a>
-        </div>
-
-        <div v-if="user.linkedin" class="information">
-          <a :href="user.linkedin">
-            <i class="mdi mdi-linkedin"></i> LinkedIn
-          </a>
-        </div>
-
-        <div v-if="user.resume" class="information">
-          <a :href="user.resume">
-            <i class="mdi mdi-file-document"></i> Resume
-          </a>
-        </div>
+    <div class="logged-out" v-if="!user.isAuthenticated">
+      <div class="content">
+        <button class="btn btn-dark" @click="login">
+        Login
+      </button>
       </div>
     </div>
 
+    <div v-else class="logged-in">
+
+          <router-link :to="{ name: 'Account' }" class="account-link">
+            <div v-if="account.picture || user.picture" class="profile">
+              <img :src="account.picture" alt="" v-if="account.picture">
+              <div class="grad" v-if="account.graduated">
+                  <i class="mdi mdi-school"></i>
+              </div>
+            </div>
+          </router-link>
+
+        <div class="content">
+
+          <div v-if="account.name" class="information">
+            <h2> {{account.name}} </h2>
+          </div>
+
+          <div v-if="account.github" class="information">
+            <a :href="account.github">
+              <i class="mdi mdi-github"></i> Github
+            </a>
+          </div>
+
+          <div v-if="account.linkedin" class="information">
+            <a :href="account.linkedin">
+              <i class="mdi mdi-linkedin"></i> LinkedIn
+            </a>
+          </div>
+
+          <div v-if="account.resume" class="information">
+            <a :href="account.resume">
+              <i class="mdi mdi-file-document"></i> Resume
+            </a>
+          </div>
+
+          <button class="btn btn-dark logout" @click="logout">
+            Logout
+          </button>
+          <!-- <button @click="infoget">
+            userinfo
+          </button> -->
+        </div>
+
+
+      </div>
   </div>
+
+  <!-- </div> -->
 </template>
 
 <script>
 import { computed } from 'vue'
 import { AppState } from '../AppState'
 import { AuthService } from '../services/AuthService'
+import { logger } from '../utils/Logger'
 export default {
   setup() {
     return {
@@ -70,6 +74,10 @@ export default {
       },
       async logout() {
         AuthService.logout({ returnTo: window.location.origin })
+      },
+      infoget(){
+        logger.log(AppState.user)
+        logger.log(AppState.account)
       }
     }
   }
@@ -77,42 +85,99 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.account-button{
-  border-radius: 50%;
-  width: 70%;
-}
-.picture-container{
-width: 100%;
-display: flex;
-justify-content: center;
-justify-items: center;
-align-content: center;
-align-items: center;
-flex-direction: row;
-}
-.account-picture{
-  border:0;
-  border-radius: 50%;
-  width: 100%;
-  aspect-ratio: 1/1;
-}
-
-.account-picture img{
-  width: 100%;
-}
-
-.information {
-  margin-top: 1rem;
-  width: 100%;
-  padding: 0 0.5rem;
-}
-
 a{
   all:unset;
   cursor: pointer;
   transition: all 100ms;
 }
+.login-card{
+  width: 100%;
+}
+.logout{
+  margin-top: 1rem;
+}
+.content{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  padding: 0 calc(5% + 0.25rem);
+
+}
+.logged-in{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.logged-out{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.account-link{
+  width: 100%;
+}
+.information {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  // text-align: center;
+}
+.information a{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-direction: row;
+}
+.information i{
+  font-size: 1.7rem;
+}
 a:hover{
   color: rgb(73, 191, 255);
+}
+.profile{
+    width: 17vw;
+    max-width: 15rem;
+    min-width: 8rem;
+    aspect-ratio: 1/1;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    position: relative;
+    margin: auto;
+}
+.profile img{
+    border: solid rgb(45, 195, 165) 0.1rem;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-position: 50%;
+    object-fit: cover;
+}
+.grad{
+    background-color: white;
+    border: solid rgb(45, 195, 165) 0.1rem;
+    z-index: 10;
+    position: absolute;
+    font-size: 2rem;
+    color: #6d6d6d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
 }
 </style>

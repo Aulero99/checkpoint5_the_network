@@ -64,8 +64,9 @@ footer {
   width: inherit;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 10vh 0 0 0;
+  justify-content: flex-start;
+  align-items: flex-start;
   position: fixed;
   overflow: hidden;
 }

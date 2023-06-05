@@ -32,7 +32,6 @@ import { logger } from '../utils/Logger'
 import { postsService } from '../services/PostsService'
 
   export default {
-    props:{},
     setup() {
         const editable = ref({})
         watchEffect(()=> {
@@ -50,7 +49,6 @@ import { postsService } from '../services/PostsService'
                     Pop.error(error)
                 }
             }
-        
         }
         }
   }

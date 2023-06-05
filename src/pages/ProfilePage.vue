@@ -1,21 +1,17 @@
 <template>
   <div class="posts-container">
 
-      <div v-if="profile">
-          <ProfileCard :profile="profile"/>
-      </div>
+        <div v-if="profile">
+            <ProfileCard :profile="profile"/>
+        </div>
 
-      <div v-if="profile">
-        <AccountCard :account="profile"/>
-      </div>
+        <div v-for="p in posts" :key="p.id">
+            <PostCard :post="p"/>
+        </div>
 
-      <div v-for="p in posts" :key="p.id">
-          <PostCard :post="p"/>
-      </div>
-
-      <div v-if="!posts">
-          <Spinner/>
-      </div>
+        <div v-if="!posts">
+            <Spinner/>
+        </div>
 
   </div>
 
@@ -28,6 +24,7 @@
 </template>
   
 <script>
+import { useRoute } from 'vue-router'
 import Pop from '../utils/Pop'
 import { profilesService } from '../services/ProfilesService'
 import { computed, onMounted } from 'vue'
@@ -37,10 +34,11 @@ import { postsService } from '../services/PostsService'
 
   export default {
     setup() {
+        const route = useRoute().params.id
 
-      async function getProfile(){
+        async function getProfile(){
             try {
-                await profilesService.getProfileById(AppState.user.id)
+                await profilesService.getProfileById(route)
             } catch (error) {
                 Pop.error(error)
             }
@@ -48,7 +46,7 @@ import { postsService } from '../services/PostsService'
 
         async function getPostsByUserId(){
             try {
-                await postsService.getPostsByUserId(AppState.user.id)
+                await postsService.getPostsByUserId(route)
             } catch (error) {
                 Pop.error(error)
             }

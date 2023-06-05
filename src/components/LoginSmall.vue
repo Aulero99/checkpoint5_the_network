@@ -7,9 +7,9 @@
       </button>
       <div v-else>
         <div class="dropdown my-2 my-lg-0">
-          <div type="button" class="bg-dark border-0 selectable no-select" data-bs-toggle="dropdown" aria-expanded="false">
-            <div v-if="account.picture || user.picture">
-              <img :src="account.picture || user.picture" alt="account photo" height="40" class="rounded" />
+          <div type="button" class="border-0 selectable no-select profile-button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div v-if="account.picture || user.picture" class="profile-container">
+              <img :src="account.picture || user.picture" alt="account photo" class="profile-picture" />
             </div>
           </div>
           <div class="dropdown-menu dropdown-menu-lg-end dropdown-menu-start p-0" aria-labelledby="authDropdown">
@@ -51,5 +51,21 @@
   }
   </script>
   
-  <style lang="scss" scoped></style>
+  <style lang="scss" scoped>
+  .profile-button{
+    border-radius: 50%;
+  }
+  .profile-container{
+    height: 3.5rem;
+    aspect-ratio: 1/1;
+  }
+  .profile-picture{
+    border: solid rgb(45, 195, 165) 0.1rem;
+    border-radius: 50%;
+    object-position: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  </style>
   

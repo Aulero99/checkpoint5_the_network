@@ -1,12 +1,15 @@
 <template>
   <div class="post-card elevation-2 d-flex flex-column" @click="userIdInPostLikeArray(post)">
+    
     <div class="profile">
+        <router-link :to="{name: 'Profile', params:{ id:post.creatorId }}">
         <div class="profile-info">
             <div class="img-container">
                 <img :src="post.creatorImg" alt="Profile Image">
             </div>
             <h5>{{ post.creatorName }}</h5>
         </div>
+        </router-link>
         <div class="profile-controls" v-if="user.id == post.creatorId">
           <div class="delete" @click="deletePost(post.id)">
             <i class="mdi mdi-delete"></i>
@@ -46,7 +49,6 @@
 import { AppState } from '../AppState'
 import { Post } from '../models/Post'
 import { postsService } from '../services/PostsService'
-import { logger } from '../utils/Logger'
 import Pop from '../utils/Pop'
 import { computed } from 'vue'
 
@@ -77,7 +79,9 @@ import { computed } from 'vue'
 
         async deletePost(id){
           try {
-            await postsService.deletePost(id)
+            if(await Pop.confirm('Do you want to delete this post?')){
+              await postsService.deletePost(id)
+            }
           } catch (error) {
             Pop.error(error)
           }
